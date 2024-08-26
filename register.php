@@ -36,6 +36,11 @@
         flex-direction: column;
         gap: 0.8rem;
       }
+
+      form .error-container{
+        color: red;
+      }
+
       .name-container {
         display: flex;
         gap: 0.5rem;
@@ -62,7 +67,7 @@
         align-items: center;
       }
 
-      .password-container input[type="password"] {
+      .password-container input.passInput {
         flex: 1;
         border: 0;
       }
@@ -135,6 +140,24 @@
         return true;
       }
 
+      const handleBack = () => {
+        console.log(window.history.length);
+        if(window.history.length > 1){
+          window.history.go(-1); 
+        } else{
+          window.location.href = "/index.php"
+        }      
+        return false;
+      }
+
+      const handleShowPassword = () => {
+        const passwordInput = document.querySelectorAll('.passInput');
+        console.log(passwordInput);
+        passwordInput.forEach((input) => {
+          input.type = input.type === "text" ? "password" : "text";
+        })
+      }
+
       const handleSubmit = (e) =>{
         if(!errorChecker()){
           //output error
@@ -148,12 +171,12 @@
   <body>
     <div class="register-container">
       <div class="title-container">
-        <span class="back-btn" onclick="window.history.go(-1); return false;">
+        <span class="back-btn" onclick="handleBack()">
           <
         </span>
         <h2>Registration</h2>
       </div>
-      <form action="" method="post" class="register-form">
+      <form action="/includes//register_handler.php" method="post" class="register-form">
         <div class="error-container"></div>
         <div class="name-container">
           <div class="input-row">
@@ -180,7 +203,7 @@
           </div>
         </div>
         <div class="input-row">
-          <label for="email">Email-</label>
+          <label for="email">Email</label>
           <input
             type="email"
             name="email"
@@ -198,10 +221,10 @@
               name="password"
               id="password"
               placeholder="enter your password"
-              class="password-input"
+              class="password-input passInput"
               required
             />
-            <span class="show-btn">show</span>
+            <span class="show-btn" onclick="handleShowPassword()">show</span>
           </div>
         </div>
         <div class="input-row">
@@ -212,10 +235,10 @@
               name="confirm-password"
               id="confirm-password"
               placeholder="enter your password"
-              class="confirm_password-input"
+              class="confirm_password-input passInput"
               required
             />
-            <span class="show-btn">show</span>
+            <span class="show-btn" onclick="handleShowPassword()">show</span>
           </div>
         </div>
         <button class="register-btn" type="submit" onclick="handleSubmit(event)">Register</button>

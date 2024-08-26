@@ -54,7 +54,7 @@
         height: max-content;
       }
 
-      .password-container input[type="password"] {
+      .password-container input.passInput {
         border: 0;
       }
 
@@ -105,6 +105,25 @@
         errorMsg = "";
         return true;
       };
+
+      const handleBack = () => {
+        console.log(window.history.length);
+        if(window.history.length > 1){
+          window.history.go(-1); 
+        } else{
+          window.location.href = "/index.php"
+        }      
+        return false;
+      }
+
+      const handleShowPassword = () => {
+        const passwordInput = document.querySelectorAll('.passInput');
+        console.log(passwordInput);
+        passwordInput.forEach((input) => {
+          input.type = input.type === "text" ? "password" : "text";
+        })
+      }
+
       const handleSubmit = (e) => {
         if (errorChecker()) {
           // If no errors, proceed with form submission
@@ -119,7 +138,7 @@
   <body>
     <div class="login-container">
       <div class="title-container">
-        <span class="back-btn" onclick="window.history.go(-1); return false;">
+        <span class="back-btn" onclick="handleBack()">
           <
         </span>
         <h2>Login</h2>
@@ -130,7 +149,7 @@
       <form action="login" method="post">
         <div class="error-container"></div>
         <div class="input-row">
-          <label for="email">Email-</label>
+          <label for="email">Email</label>
           <input
             type="email"
             name="email"
@@ -148,10 +167,10 @@
               name="password"
               id="password"
               placeholder="enter your password"
-              class="password-input"
+              class="password-input passInput"
               required
             />
-            <span class="show-btn">show</span>
+            <span class="show-btn" onclick="handleShowPassword()">show</span>
           </div>
         </div>
         <span class="forgot_pass-btn">Forget Password?</span>
